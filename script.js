@@ -3,14 +3,16 @@ const selectedSeatsDisplay = document.getElementById('selectedSeats');
 const confirmButton = document.getElementById('confirmButton');
 let selectedSeats = [];
 
-// Filas y columnas de asientos
-const rows = ["A", "B", "C"];
-const seatsPerRow = [7, 7, 6];
-const totalSeats = seatsPerRow.reduce((a, b) => a + b, 0);
+// Filas y cantidad de asientos por cada columna
+const seatConfig = {
+    A: 51,
+    B: 51,
+    C: 47
+};
 
-// Crear asientos con fila y número (ej. A1, B5)
-rows.forEach((row, rowIndex) => {
-    for (let seatNum = 1; seatNum <= seatsPerRow[rowIndex]; seatNum++) {
+// Crear los asientos con disposición de 6 o 7 por fila
+Object.entries(seatConfig).forEach(([row, seatCount]) => {
+    for (let seatNum = 1; seatNum <= seatCount; seatNum++) {
         const seat = document.createElement('div');
         seat.classList.add('seat');
         seat.textContent = `${row}${seatNum}`;
@@ -19,23 +21,35 @@ rows.forEach((row, rowIndex) => {
         if (Math.random() < 0.3) {
             seat.classList.add('taken');
             seat.title = "Asiento Ocupado";
-        } else {
-            seat.addEventListener('click', () => toggleSeat(seat, `${row}${seatNum}`));
         }
+
+        // Agregar evento para seleccionar o cambiar el estado de ocupado
+        seat.addEventListener('click', () => toggleSeat(seat, `${row}${seatNum}`));
 
         seatMap.appendChild(seat);
     }
+
+    // Crear una nueva fila después de cada 6 o 7 asientos
+    const rowBreak = document.createElement('div');
+    rowBreak.style.width = '100%';
+    rowBreak.style.height = '0';
+    seatMap.appendChild(rowBreak);
 });
 
-// Función para seleccionar/deseleccionar asientos
+// Función para seleccionar/deseleccionar o cambiar el estado de asientos ocupados
 function toggleSeat(seat, seatId) {
-    if (seat.classList.contains('taken')) return;
-
-    seat.classList.toggle('selected');
-
-    if (selectedSeats.includes(seatId)) {
+    if (seat.classList.contains('taken')) {
+        // Si está ocupado, se puede liberar
+        seat.classList.remove('taken');
+        seat.classList.add('selected');
+        selectedSeats.push(seatId);
+    } else if (seat.classList.contains('selected')) {
+        // Si está seleccionado, se deselecciona
+        seat.classList.remove('selected');
         selectedSeats = selectedSeats.filter(id => id !== seatId);
     } else {
+        // Si está libre, se selecciona
+        seat.classList.add('selected');
         selectedSeats.push(seatId);
     }
 
