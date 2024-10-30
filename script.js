@@ -32,12 +32,6 @@ Object.entries(seatConfig).forEach(([column, seatCount]) => {
         seat.classList.add('seat');
         seat.textContent = `${column}${seatNum}`;
 
-        // Asignar algunos asientos como ocupados aleatoriamente
-        if (Math.random() < 0.3) {
-            seat.classList.add('taken');
-            seat.title = "Asiento Ocupado";
-        }
-
         // Agregar evento para seleccionar o cambiar el estado de ocupado
         seat.addEventListener('click', () => toggleSeat(seat, `${column}${seatNum}`));
 
@@ -49,19 +43,17 @@ Object.entries(seatConfig).forEach(([column, seatCount]) => {
     seatMap.appendChild(columnDiv);
 });
 
-// Función para seleccionar/deseleccionar o cambiar el estado de asientos ocupados
+// Función para seleccionar/deseleccionar asientos
 function toggleSeat(seat, seatId) {
     if (seat.classList.contains('taken')) {
-        // Si está ocupado, se puede liberar
-        seat.classList.remove('taken');
-        seat.classList.add('selected');
-        selectedSeats.push(seatId);
+        // Si el asiento está ocupado, no permite seleccionarlo
+        return;
     } else if (seat.classList.contains('selected')) {
-        // Si está seleccionado, se deselecciona
+        // Si el asiento está seleccionado, lo deselecciona
         seat.classList.remove('selected');
         selectedSeats = selectedSeats.filter(id => id !== seatId);
     } else {
-        // Si está libre, se selecciona
+        // Si el asiento está libre, lo selecciona
         seat.classList.add('selected');
         selectedSeats.push(seatId);
     }
