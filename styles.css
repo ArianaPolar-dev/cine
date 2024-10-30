@@ -10,20 +10,25 @@ body {
 }
 
 .seat-map {
-    display: grid;
-    grid-template-columns: repeat(7, 30px);
-    gap: 5px;
+    display: flex;
+    gap: 20px;
     justify-content: center;
 }
 
+.column {
+    display: grid;
+    grid-template-columns: repeat(7, 25px);
+    gap: 5px;
+}
+
 .seat {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-color: black;
     border: 1px solid #333;
     cursor: pointer;
     color: white;
-    font-size: 0.7em;
+    font-size: 0.6em;
     display: flex;
     justify-content: center;
     align-items: center;
