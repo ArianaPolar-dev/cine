@@ -11,18 +11,19 @@ body {
 
 .seat-map {
     display: grid;
-    grid-template-columns: repeat(7, 50px);
-    gap: 10px;
+    grid-template-columns: repeat(7, 30px);
+    gap: 5px;
     justify-content: center;
 }
 
 .seat {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     background-color: black;
     border: 1px solid #333;
     cursor: pointer;
     color: white;
+    font-size: 0.7em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +35,7 @@ body {
 
 .seat.taken {
     background-color: red;
-    cursor: not-allowed;
+    cursor: pointer;
 }
 
 h2 {
