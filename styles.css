@@ -17,8 +17,18 @@ body {
 
 .column {
     display: grid;
-    grid-template-columns: repeat(7, 25px);
+    grid-auto-rows: 25px;
     gap: 5px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(6, 25px);
+    gap: 5px;
+}
+
+.row.alternate {
+    grid-template-columns: repeat(7, 25px);
 }
 
 .seat {
