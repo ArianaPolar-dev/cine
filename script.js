@@ -16,8 +16,18 @@ Object.entries(seatConfig).forEach(([column, seatCount]) => {
     const columnDiv = document.createElement('div');
     columnDiv.classList.add('column');
 
-    // Crear los asientos en la columna
+    // Crear las filas dentro de la columna
+    let row;
     for (let seatNum = 1; seatNum <= seatCount; seatNum++) {
+        // Crear una nueva fila si es el inicio de la columna o se alcanzó el límite de asientos por fila
+        if (seatNum % 6 === 1 || seatNum % 7 === 1) {
+            row = document.createElement('div');
+            row.classList.add('row');
+            if (seatNum % 13 === 1) row.classList.add('alternate');  // Alterna entre 6 y 7 asientos por fila
+            columnDiv.appendChild(row);
+        }
+
+        // Crear el asiento
         const seat = document.createElement('div');
         seat.classList.add('seat');
         seat.textContent = `${column}${seatNum}`;
@@ -31,7 +41,8 @@ Object.entries(seatConfig).forEach(([column, seatCount]) => {
         // Agregar evento para seleccionar o cambiar el estado de ocupado
         seat.addEventListener('click', () => toggleSeat(seat, `${column}${seatNum}`));
 
-        columnDiv.appendChild(seat);
+        // Agregar el asiento a la fila
+        row.appendChild(seat);
     }
 
     // Agregar la columna al mapa de asientos
