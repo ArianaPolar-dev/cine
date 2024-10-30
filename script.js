@@ -3,19 +3,24 @@ const selectedSeatsDisplay = document.getElementById('selectedSeats');
 const confirmButton = document.getElementById('confirmButton');
 let selectedSeats = [];
 
-// Filas y cantidad de asientos por cada columna
+// Configuración de columnas y cantidad de asientos
 const seatConfig = {
     A: 51,
     B: 51,
     C: 47
 };
 
-// Crear los asientos con disposición de 6 o 7 por fila
-Object.entries(seatConfig).forEach(([row, seatCount]) => {
+// Crear columnas
+Object.entries(seatConfig).forEach(([column, seatCount]) => {
+    // Crear un contenedor para la columna
+    const columnDiv = document.createElement('div');
+    columnDiv.classList.add('column');
+
+    // Crear los asientos en la columna
     for (let seatNum = 1; seatNum <= seatCount; seatNum++) {
         const seat = document.createElement('div');
         seat.classList.add('seat');
-        seat.textContent = `${row}${seatNum}`;
+        seat.textContent = `${column}${seatNum}`;
 
         // Asignar algunos asientos como ocupados aleatoriamente
         if (Math.random() < 0.3) {
@@ -24,16 +29,13 @@ Object.entries(seatConfig).forEach(([row, seatCount]) => {
         }
 
         // Agregar evento para seleccionar o cambiar el estado de ocupado
-        seat.addEventListener('click', () => toggleSeat(seat, `${row}${seatNum}`));
+        seat.addEventListener('click', () => toggleSeat(seat, `${column}${seatNum}`));
 
-        seatMap.appendChild(seat);
+        columnDiv.appendChild(seat);
     }
 
-    // Crear una nueva fila después de cada 6 o 7 asientos
-    const rowBreak = document.createElement('div');
-    rowBreak.style.width = '100%';
-    rowBreak.style.height = '0';
-    seatMap.appendChild(rowBreak);
+    // Agregar la columna al mapa de asientos
+    seatMap.appendChild(columnDiv);
 });
 
 // Función para seleccionar/deseleccionar o cambiar el estado de asientos ocupados
@@ -68,9 +70,11 @@ confirmButton.addEventListener('click', () => {
         
         // Marcar asientos seleccionados como ocupados
         selectedSeats.forEach(seatId => {
-            const seat = Array.from(seatMap.children).find(s => s.textContent === seatId);
-            seat.classList.remove('selected');
-            seat.classList.add('taken');
+            const seat = Array.from(seatMap.querySelectorAll('.seat')).find(s => s.textContent === seatId);
+            if (seat) {
+                seat.classList.remove('selected');
+                seat.classList.add('taken');
+            }
         });
 
         selectedSeats = [];
