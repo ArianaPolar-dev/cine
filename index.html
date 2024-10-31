@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Asientos - Cine</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Asientos - Cine</h1>
-        <div class="seat-map" id="seatMap"></div>
-        <button id="confirmButton">Confirmar Selección</button>
-        <h2>Asientos Seleccionados: <span id="selectedSeats"></span></h2>
+    <!-- Botón VIP para acceder a la página de administración -->
+    <button id="vipButton">VIP</button>
+
+    <!-- Modal para ingresar la clave de administrador -->
+    <div id="vipModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Acceso de Administrador</h2>
+            <input type="password" id="adminPassword" placeholder="Ingrese la clave">
+            <button id="adminLogin">Entrar</button>
+        </div>
     </div>
-    <!-- Aquí se mostrará el mapa de asientos -->
-    <div id="seatMap"></div>
+
+    <!-- Mapa de asientos para usuarios -->
+    <div id="seatMap" class="seat-map"></div>
     <button id="confirmButton">Confirmar Selección</button>
     <p>Asientos seleccionados: <span id="selectedSeats"></span></p>
 
