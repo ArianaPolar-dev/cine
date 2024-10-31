@@ -7,52 +7,66 @@ body {
 .container {
     margin: 20px auto;
     width: 80%;
+    max-width: 600px;
 }
 
-.seat-map {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.column {
-    display: grid;
-    grid-auto-rows: 25px;
-    gap: 5px;
-}
-
-.row {
-    display: grid;
-    grid-template-columns: repeat(6, 25px);
-    gap: 5px;
-}
-
-.row.alternate {
-    grid-template-columns: repeat(7, 25px);
-}
-
-.seat {
-    width: 25px;
-    height: 25px;
-    background-color: black;
-    border: 1px solid #333;
-    cursor: pointer;
-    color: white;
-    font-size: 0.6em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.seat.selected {
-    background-color: green;
-}
-
-.seat.taken {
-    background-color: red;
-    cursor: pointer;
+h1 {
+    color: #333;
+    margin-bottom: 10px;
 }
 
 h2 {
     margin-top: 20px;
+    font-size: 1.2em;
+    color: #666;
+}
+
+#seatMap {
+    display: grid;
+    grid-template-columns: repeat(7, 40px); /* Cada fila tendrá hasta 7 asientos */
+    gap: 10px;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    background-color: #000; /* Color negro para los asientos disponibles */
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    color: #fff;
+    cursor: pointer;
+}
+
+.seat.taken {
+    background-color: #dc3545; /* Color rojo para los asientos ocupados */
+    cursor: not-allowed;
+}
+
+.seat.selected {
+    background-color: #6c757d; /* Color diferente para los asientos seleccionados */
+}
+
+#confirmButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+#confirmButton:hover {
+    background-color: #0056b3;
+}
+
+#selectedSeats {
+    font-weight: bold;
+    color: #333;
 }
