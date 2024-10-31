@@ -50,6 +50,14 @@
     background-color: black;
     border: 1px solid #aaa;
     cursor: pointer;
+    .seat {
+    color: white; /* Cambia a tu color preferido */
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 }
 
 .seat.selected {
