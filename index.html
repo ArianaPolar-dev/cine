@@ -1,36 +1,22 @@
-// Importar las funciones necesarias del SDK
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, updateDoc } from "firebase/firestore";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Asientos - Cine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Asientos - Cine</h1>
+        <div class="seat-map" id="seatMap"></div>
+        <button id="confirmButton">Confirmar Selección</button>
+        <h2>Asientos Seleccionados: <span id="selectedSeats"></span></h2>
+    </div>
 
-// Configuración de tu app de Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
-  authDomain: "asientospolar.firebaseapp.com",
-  projectId: "asientospolar",
-  storageBucket: "asientospolar.firebasestorage.app",
-  messagingSenderId: "477885194157",
-  appId: "1:477885194157:web:8d0e7324be551002024b24"
-};
-
-// Inicializar Firebase y Firestore
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// Ejemplo de cómo leer y actualizar asientos en Firestore
-async function loadSeats() {
-  const seatsCollection = collection(db, "seats");
-  const seatSnapshot = await getDocs(seatsCollection);
-  seatSnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-    // Aquí puedes crear la lógica para representar los asientos en el DOM
-  });
-}
-
-async function occupySeat(seatId) {
-  const seatRef = doc(db, "seats", seatId);
-  await updateDoc(seatRef, { occupied: true });
-  console.log(`Asiento ${seatId} ahora está ocupado`);
-}
-
-// Llamar a loadSeats() para cargar los asientos al abrir la página
-loadSeats();
+    <!-- Importa el archivo de configuración Firebase -->
+    <script type="module" src="firebase.js"></script>
+    <!-- Importa el archivo con la lógica de la interfaz de usuario -->
+    <script src="script.js"></script>
+</body>
+</html>
