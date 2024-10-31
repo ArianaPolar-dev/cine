@@ -1,8 +1,6 @@
-// Importar las funciones necesarias del SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getFirestore, collection, doc, getDocs, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// Configuración de Firebase (usa tu configuración actual)
 const firebaseConfig = {
   apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
   authDomain: "asientospolar.firebaseapp.com",
@@ -12,39 +10,74 @@ const firebaseConfig = {
   appId: "1:477885194157:web:8d0e7324be551002024b24"
 };
 
-// Inicializar Firebase y Firestore
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Código para cargar y actualizar el estado de los asientos
 const seatMap = document.getElementById('seatMap');
 const confirmButton = document.getElementById('confirmButton');
 const selectedSeatsDisplay = document.getElementById('selectedSeats');
-let selectedSeats = [];
+const vipButton = document.getElementById('vipButton');
+const vipModal = document.getElementById('vipModal');
+const adminLogin = document.getElementById('adminLogin');
+const adminPasswordInput = document.getElementById('adminPassword');
+const closeModal = document.querySelector(".close");
 
-// Cargar los asientos desde Firestore y mostrarlos en el DOM
+let selectedSeats = [];
+let isAdmin = false;
+
+// Mostrar modal de autenticación
+vipButton.addEventListener('click', () => {
+    vipModal.style.display = 'block';
+});
+
+// Cerrar modal
+closeModal.addEventListener('click', () => {
+    vipModal.style.display = 'none';
+});
+
+// Validar clave de administrador
+adminLogin.addEventListener('click', () => {
+    const password = adminPasswordInput.value;
+    if (password === "piroxeno") {
+        isAdmin = true;
+        vipModal.style.display = 'none';
+        alert("Acceso de administrador concedido.");
+    } else {
+        alert("Clave incorrecta.");
+    }
+});
+
+// Función para cargar los asientos
 async function loadSeats() {
     const seatsSnapshot = await getDocs(collection(db, "seats"));
+    seatMap.innerHTML = ''; // Limpiar el mapa de asientos antes de recargar
+
     seatsSnapshot.forEach(doc => {
         const seatData = doc.data();
         const seatDiv = document.createElement('div');
         seatDiv.classList.add('seat');
-        
-        // Si el asiento está ocupado, márcalo como "taken"
+
         if (seatData.occupied) {
             seatDiv.classList.add('taken');
-        } else {
-            // Permitir al usuario seleccionar el asiento si está libre
-            seatDiv.addEventListener('click', () => toggleSeat(seatDiv, doc.id));
         }
-        
-        seatDiv.textContent = doc.id; // Esto muestra el ID del asiento
+
+        seatDiv.textContent = doc.id;
+
+        // Permitir seleccionar/desmarcar si es usuario o cambiar estado si es administrador
+        seatDiv.addEventListener('click', () => {
+            if (isAdmin) {
+                toggleAdminSeat(seatDiv, doc.id);
+            } else {
+                toggleUserSeat(seatDiv, doc.id);
+            }
+        });
+
         seatMap.appendChild(seatDiv);
     });
 }
 
-// Función para alternar entre seleccionar y deseleccionar un asiento
-function toggleSeat(seatDiv, seatId) {
+// Función para alternar el estado del asiento (usuario)
+function toggleUserSeat(seatDiv, seatId) {
     if (seatDiv.classList.contains('taken')) return;
 
     seatDiv.classList.toggle('selected');
@@ -57,7 +90,17 @@ function toggleSeat(seatDiv, seatId) {
     selectedSeatsDisplay.textContent = selectedSeats.join(', ');
 }
 
-// Confirmar selección y guardar en Firestore
+// Función para alternar el estado del asiento (admin)
+async function toggleAdminSeat(seatDiv, seatId) {
+    const seatRef = doc(db, "seats", seatId);
+    const newStatus = !seatDiv.classList.contains('taken');
+
+    await updateDoc(seatRef, { occupied: newStatus });
+    seatDiv.classList.toggle('taken');
+    alert(`Asiento ${seatId} ahora está ${newStatus ? "ocupado" : "libre"}.`);
+}
+
+// Confirmar selección de asientos (usuario)
 confirmButton.addEventListener('click', async () => {
     if (selectedSeats.length === 0) {
         alert("No has seleccionado ningún asiento.");
@@ -72,9 +115,8 @@ confirmButton.addEventListener('click', async () => {
     alert(`Has confirmado los asientos: ${selectedSeats.join(', ')}`);
     selectedSeats = [];
     selectedSeatsDisplay.textContent = "";
-    seatMap.innerHTML = ""; // Limpiar el mapa de asientos
-    loadSeats(); // Recargar los asientos con el nuevo estado
+    loadSeats();
 });
 
-// Llamar a loadSeats() al cargar la página
+// Cargar asientos al cargar la página
 loadSeats();
