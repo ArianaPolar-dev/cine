@@ -23,7 +23,7 @@ h2 {
 
 #seatMap {
     display: grid;
-    grid-template-columns: repeat(7, 40px); /* Cada fila tendrá hasta 7 asientos */
+    grid-template-columns: repeat(7, 40px);
     gap: 10px;
     justify-content: center;
     margin: 20px auto;
@@ -32,23 +32,22 @@ h2 {
 .seat {
     width: 40px;
     height: 40px;
-    background-color: #000; /* Color negro para los asientos disponibles */
+    background-color: #000;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     cursor: pointer;
-    font-size: 0.8em;
 }
 
 .seat.taken {
-    background-color: #dc3545; /* Color rojo para los asientos ocupados */
+    background-color: #dc3545;
     cursor: not-allowed;
 }
 
 .seat.selected {
-    background-color: #6c757d; /* Color diferente para los asientos seleccionados */
+    background-color: #6c757d;
 }
 
 #confirmButton {
@@ -64,9 +63,4 @@ h2 {
 
 #confirmButton:hover {
     background-color: #0056b3;
-}
-
-#selectedSeats {
-    font-weight: bold;
-    color: #333;
 }
