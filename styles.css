@@ -1,26 +1,3 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-}
-
-.container {
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-}
-
-h1 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-h2 {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #666;
-}
-
 #seatMap {
     display: grid;
     grid-template-columns: repeat(7, 40px);
@@ -34,10 +11,6 @@ h2 {
     height: 40px;
     background-color: #000;
     border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
     cursor: pointer;
 }
 
@@ -48,19 +21,4 @@ h2 {
 
 .seat.selected {
     background-color: #6c757d;
-}
-
-#confirmButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-#confirmButton:hover {
-    background-color: #0056b3;
 }
