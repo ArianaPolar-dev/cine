@@ -38,14 +38,10 @@
 /* Estilos para los asientos */
 .seat-map {
     display: grid;
-    grid-template-columns: repeat(6, 40px); /* Alterna con filas de 7 */
+    grid-template-columns: repeat(6, 40px); /* Cambia el número de columnas si es necesario */
     gap: 10px;
     margin-top: 50px;
     justify-content: center;
-}
-
-.seat-row:nth-child(even) {
-    grid-template-columns: repeat(7, 40px);
 }
 
 .seat {
@@ -53,11 +49,6 @@
     height: 40px;
     background-color: black;
     border: 1px solid #aaa;
-    color: white; /* Color de letras para los asientos */
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     cursor: pointer;
 }
 
