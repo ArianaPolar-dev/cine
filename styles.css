@@ -20,8 +20,13 @@ body {
     width: 30px;
     height: 30px;
     background-color: black;
+    color: white;  /* Color blanco para mejorar visibilidad del número */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #aaa;
     cursor: pointer;
+    user-select: none;
 }
 
 .seat.selected {
