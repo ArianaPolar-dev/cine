@@ -1,18 +1,22 @@
+// Importar las funciones necesarias del SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getFirestore, collection, doc, getDocs, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+import { getFirestore, collection, doc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
+// Configuración de tu aplicación web de Firebase
 const firebaseConfig = {
-  apiKey: "tu-apiKey",
-  authDomain: "tu-authDomain",
-  projectId: "tu-projectId",
-  storageBucket: "tu-storageBucket",
-  messagingSenderId: "tu-messagingSenderId",
-  appId: "tu-appId"
+  apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
+  authDomain: "asientospolar.firebaseapp.com",
+  projectId: "asientospolar",
+  storageBucket: "asientospolar.firebasestorage.app",
+  messagingSenderId: "477885194157",
+  appId: "1:477885194157:web:8d0e7324be551002024b24"
 };
 
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Elementos HTML
 const seatMap = document.getElementById('seatMap');
 const confirmButton = document.getElementById('confirmButton');
 const selectedSeatsDisplay = document.getElementById('selectedSeats');
