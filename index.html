@@ -7,25 +7,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Botón VIP para acceder a la página de administración -->
-    <button id="vipButton">VIP</button>
+    <div class="container">
+        <h1>Gestión de Asientos - Cine</h1>
+        <div id="seatMap" class="seat-map"></div>
+        <button id="confirmButton">Confirmar Selección</button>
+        <h2>Asientos Seleccionados: <span id="selectedSeats"></span></h2>
+        <button id="vipButton">VIP</button>
+    </div>
 
-    <!-- Modal para ingresar la clave de administrador -->
+    <!-- Modal para autenticación VIP -->
     <div id="vipModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Acceso de Administrador</h2>
-            <input type="password" id="adminPassword" placeholder="Ingrese la clave">
-            <button id="adminLogin">Entrar</button>
+            <h2>Acceso VIP</h2>
+            <input type="password" id="adminPassword" placeholder="Introduce la clave de administrador">
+            <button id="adminLogin">Acceder</button>
         </div>
     </div>
 
-    <!-- Mapa de asientos para usuarios -->
-    <div id="seatMap" class="seat-map"></div>
-    <button id="confirmButton">Confirmar Selección</button>
-    <p>Asientos seleccionados: <span id="selectedSeats"></span></p>
-
-    <!-- Enlace al archivo JavaScript -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
