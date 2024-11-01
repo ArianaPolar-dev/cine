@@ -28,6 +28,7 @@ const closeModal = document.querySelector(".close");
 
 let selectedSeats = [];
 let isAdmin = false;
+let draggedSeat = null;
 
 // Mostrar modal de autenticación
 vipButton.addEventListener('click', () => {
@@ -66,6 +67,22 @@ async function loadSeats() {
         }
 
         seatDiv.textContent = doc.id;
+
+        // Configurar la funcionalidad de arrastrar para administradores
+        if (isAdmin) {
+            seatDiv.draggable = true;
+            seatDiv.addEventListener('dragstart', (e) => {
+                draggedSeat = seatDiv;
+            });
+            seatDiv.addEventListener('dragover', (e) => e.preventDefault());
+            seatDiv.addEventListener('drop', () => {
+                if (draggedSeat && draggedSeat !== seatDiv) {
+                    const draggedText = draggedSeat.textContent;
+                    draggedSeat.textContent = seatDiv.textContent;
+                    seatDiv.textContent = draggedText;
+                }
+            });
+        }
 
         // Permitir seleccionar/desmarcar si es usuario o cambiar estado si es administrador
         seatDiv.addEventListener('click', () => {
