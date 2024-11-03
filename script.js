@@ -17,21 +17,53 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Elementos HTML
-const seatMapA = document.getElementById('seatMapA');
-const seatMapB = document.getElementById('seatMapB');
-const seatMapC = document.getElementById('seatMapC');
+const sectionA = document.getElementById('sectionA');
+const sectionB = document.getElementById('sectionB');
+const sectionC = document.getElementById('sectionC');
+const confirmButton = document.getElementById('confirmButton');
+const selectedSeatsDisplay = document.getElementById('selectedSeats');
+const vipButton = document.getElementById('vipButton');
+const vipModal = document.getElementById('vipModal');
+const adminLogin = document.getElementById('adminLogin');
+const adminPasswordInput = document.getElementById('adminPassword');
+const closeModal = document.querySelector(".close");
 
-// Variables auxiliares
+let selectedSeats = [];
 let isAdmin = false;
 let draggedSeat = null;
+
+// Mostrar modal de autenticación
+vipButton.addEventListener('click', () => {
+    vipModal.style.display = 'block';
+});
+
+// Cerrar modal
+closeModal.addEventListener('click', () => {
+    vipModal.style.display = 'none';
+});
+
+// Validar clave de administrador
+adminLogin.addEventListener('click', () => {
+    const password = adminPasswordInput.value;
+    if (password === "piroxeno") {
+        isAdmin = true;
+        vipModal.style.display = 'none';
+        alert("Acceso de administrador concedido.");
+    } else {
+        alert("Clave incorrecta.");
+    }
+});
 
 // Función para cargar y mostrar los asientos
 async function loadSeats() {
     try {
+        console.log("Intentando cargar asientos...");
         const seatsSnapshot = await getDocs(collection(db, "seats"));
-        seatMapA.innerHTML = '';
-        seatMapB.innerHTML = '';
-        seatMapC.innerHTML = '';
+
+        // Limpiar el contenido de las secciones para evitar duplicados
+        sectionA.innerHTML = '';
+        sectionB.innerHTML = '';
+        sectionC.innerHTML = '';
 
         seatsSnapshot.forEach(doc => {
             const seatData = doc.data();
@@ -43,20 +75,22 @@ async function loadSeats() {
             if (seatData.occupied) {
                 seatDiv.classList.add('taken');
             }
-            
+
             // Colocar los asientos en su sección respectiva
             if (doc.id.startsWith('A')) {
-                seatMapA.appendChild(seatDiv);
+                sectionA.appendChild(seatDiv);
             } else if (doc.id.startsWith('B')) {
-                seatMapB.appendChild(seatDiv);
+                sectionB.appendChild(seatDiv);
             } else if (doc.id.startsWith('C')) {
-                seatMapC.appendChild(seatDiv);
+                sectionC.appendChild(seatDiv);
             }
 
             // Funcionalidad de selección y arrastre para el administrador
             seatDiv.addEventListener('click', () => {
                 if (isAdmin) {
                     toggleAdminSeat(seatDiv, doc.id);
+                } else {
+                    toggleUserSeat(seatDiv, doc.id);
                 }
             });
 
@@ -75,8 +109,9 @@ async function loadSeats() {
                 });
             }
         });
+        console.log("Asientos cargados y mostrados exitosamente.");
     } catch (error) {
-        console.error("Error al cargar los asientos: ", error);
+        console.error("Error al cargar los asientos:", error);
     }
 }
 
@@ -90,4 +125,4 @@ async function toggleAdminSeat(seatDiv, seatId) {
 }
 
 // Llamar a loadSeats para cargar y mostrar los asientos al cargar la página
-loadSeats();
+document.addEventListener("DOMContentLoaded", loadSeats);
