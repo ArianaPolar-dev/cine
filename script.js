@@ -4,7 +4,7 @@ import { getFirestore, collection, doc, getDocs, updateDoc } from "https://www.g
 
 // Configuración de tu aplicación web de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
+  apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
   authDomain: "asientospolar.firebaseapp.com",
   projectId: "asientospolar",
   storageBucket: "asientospolar.firebasestorage.app",
@@ -15,6 +15,8 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+
 
 // Elementos HTML
 const sectionA = document.getElementById('sectionA');
