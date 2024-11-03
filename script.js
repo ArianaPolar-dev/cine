@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 import { getFirestore, collection, doc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-// Configuración de tu aplicación web de Firebase
+// Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA5nPyvaMXhl2K02FDE1JDbm8ceJ_tRgSU",
   authDomain: "asientospolar.firebaseapp.com",
@@ -16,82 +16,78 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
-
 // Elementos HTML
-const sectionA = document.getElementById('sectionA');
-const sectionB = document.getElementById('sectionB');
-const sectionC = document.getElementById('sectionC');
-const confirmButton = document.getElementById('confirmButton');
-const selectedSeatsDisplay = document.getElementById('selectedSeats');
-const vipButton = document.getElementById('vipButton');
-const vipModal = document.getElementById('vipModal');
-const adminLogin = document.getElementById('adminLogin');
-const adminPasswordInput = document.getElementById('adminPassword');
-const closeModal = document.querySelector(".close");
+const seatMapA = document.getElementById('seatMapA');
+const seatMapB = document.getElementById('seatMapB');
+const seatMapC = document.getElementById('seatMapC');
 
-let selectedSeats = [];
+// Variables auxiliares
 let isAdmin = false;
 let draggedSeat = null;
 
-// Mostrar modal de autenticación
-vipButton.addEventListener('click', () => {
-    vipModal.style.display = 'block';
-});
-
-// Cerrar modal
-closeModal.addEventListener('click', () => {
-    vipModal.style.display = 'none';
-});
-
-// Validar clave de administrador
-adminLogin.addEventListener('click', () => {
-    const password = adminPasswordInput.value;
-    if (password === "piroxeno") {
-        isAdmin = true;
-        vipModal.style.display = 'none';
-        alert("Acceso de administrador concedido.");
-    } else {
-        alert("Clave incorrecta.");
-    }
-});
-
-// Función para cargar los asientos
+// Función para cargar y mostrar los asientos
 async function loadSeats() {
-    const seatsSnapshot = await getDocs(collection(db, "seats"));
+    try {
+        const seatsSnapshot = await getDocs(collection(db, "seats"));
+        seatMapA.innerHTML = '';
+        seatMapB.innerHTML = '';
+        seatMapC.innerHTML = '';
 
-    seatsSnapshot.forEach(doc => {
-        const seatData = doc.data();
-        const seatDiv = document.createElement('div');
-        seatDiv.classList.add('seat');
+        seatsSnapshot.forEach(doc => {
+            const seatData = doc.data();
+            const seatDiv = document.createElement('div');
+            seatDiv.classList.add('seat');
+            seatDiv.textContent = doc.id;
 
-        if (seatData.occupied) {
-            seatDiv.classList.add('taken');
-        }
+            // Aplicar estilo según el estado del asiento
+            if (seatData.occupied) {
+                seatDiv.classList.add('taken');
+            }
+            
+            // Colocar los asientos en su sección respectiva
+            if (doc.id.startsWith('A')) {
+                seatMapA.appendChild(seatDiv);
+            } else if (doc.id.startsWith('B')) {
+                seatMapB.appendChild(seatDiv);
+            } else if (doc.id.startsWith('C')) {
+                seatMapC.appendChild(seatDiv);
+            }
 
-        seatDiv.textContent = doc.id;
+            // Funcionalidad de selección y arrastre para el administrador
+            seatDiv.addEventListener('click', () => {
+                if (isAdmin) {
+                    toggleAdminSeat(seatDiv, doc.id);
+                }
+            });
 
-        // Agregar el asiento a la sección correspondiente
-        if (doc.id.startsWith('A')) {
-            sectionA.appendChild(seatDiv);
-        } else if (doc.id.startsWith('B')) {
-            sectionB.appendChild(seatDiv);
-        } else if (doc.id.startsWith('C')) {
-            sectionC.appendChild(seatDiv);
-        }
-
-        // Función para seleccionar y desmarcar asientos
-        seatDiv.addEventListener('click', () => {
             if (isAdmin) {
-                toggleAdminSeat(seatDiv, doc.id);
-            } else {
-                toggleUserSeat(seatDiv, doc.id);
+                seatDiv.draggable = true;
+                seatDiv.addEventListener('dragstart', (e) => {
+                    draggedSeat = seatDiv;
+                });
+                seatDiv.addEventListener('dragover', (e) => e.preventDefault());
+                seatDiv.addEventListener('drop', () => {
+                    if (draggedSeat && draggedSeat !== seatDiv) {
+                        const draggedText = draggedSeat.textContent;
+                        draggedSeat.textContent = seatDiv.textContent;
+                        seatDiv.textContent = draggedText;
+                    }
+                });
             }
         });
-    });
+    } catch (error) {
+        console.error("Error al cargar los asientos: ", error);
+    }
 }
 
-// Resto del código...
+// Cambiar estado del asiento (Admin)
+async function toggleAdminSeat(seatDiv, seatId) {
+    const seatRef = doc(db, "seats", seatId);
+    const newStatus = !seatDiv.classList.contains('taken');
+    await updateDoc(seatRef, { occupied: newStatus });
+    seatDiv.classList.toggle('taken');
+    alert(`El asiento ${seatId} ahora está ${newStatus ? "ocupado" : "libre"}.`);
+}
 
-// Cargar asientos al cargar la página
+// Llamar a loadSeats para cargar y mostrar los asientos al cargar la página
 loadSeats();
