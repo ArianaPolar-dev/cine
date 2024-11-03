@@ -3,28 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Asientos</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Distribución de Asientos</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Asientos</h1>
-        <div id="seatMap" class="seat-map"></div>
-        <button id="confirmButton">Confirmar Selección</button>
-        <h2>Asientos Seleccionados: <span id="selectedSeats"></span></h2>
-        <button id="vipButton">VIP</button>
-    </div>
 
-    <!-- Modal para autenticación VIP -->
+    <h1>Distribución de Asientos</h1>
+
+    <!-- Contenedor de asientos -->
+    <div class="seat-sections">
+        <!-- Sección A -->
+        <div class="seat-container" id="sectionA">
+            <h2>Sección A</h2>
+        </div>
+
+        <!-- Sección B -->
+        <div class="seat-container" id="sectionB">
+            <h2>Sección B</h2>
+        </div>
+
+        <!-- Sección C -->
+        <div class="seat-container" id="sectionC">
+            <h2>Sección C</h2>
+        </div>
+    </div>
+    
+    <!-- Modal VIP -->
     <div id="vipModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Acceso VIP</h2>
             <input type="password" id="adminPassword" placeholder="Introduce la clave de administrador">
-            <button id="adminLogin">Acceder</button>
+            <button id="adminLogin">Entrar</button>
         </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <!-- Confirmación de selección -->
+    <div>
+        <button id="confirmButton">Confirmar Selección</button>
+        <p>Asientos seleccionados: <span id="selectedSeats"></span></p>
+        <button id="vipButton">Acceso VIP</button>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
